@@ -1,0 +1,83 @@
+.card {
+  display: flex;
+  align-items: center;
+
+  width: 600px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease-in-out;
+
+  &:hover {
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  }
+
+  .card-image-container {
+    border-radius: 8px;
+    overflow: hidden;
+    margin-right: 15px;
+
+    .card-image {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+    }
+  }
+
+  .card-content {
+    flex: 1;
+
+    .card-title {
+      margin: 0;
+      font-size: 1.5em;
+      color: #333;
+    }
+
+    .card-info {
+      margin: 5px 0;
+      color: #555;
+    }
+
+    .card-price {
+      margin: 0;
+      font-size: 1.2em;
+      color: #ff4d4d;
+    }
+  }
+
+  .delete-button {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 1.2em;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s ease-in-out;
+
+    &:hover {
+      background-color: #d33;
+    }
+
+    .delete-icon {
+      //   margin-right: 8px;
+    }
+  }
+  .edit-button {
+    background-color: #3498db;
+    color: #ffffff;
+    border: none;
+    padding: 8px 11px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-right: 3px;
+
+    &:hover {
+      background-color: #2980b9;
+    }
+  }
+}

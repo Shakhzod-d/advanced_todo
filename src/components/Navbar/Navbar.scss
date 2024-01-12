@@ -1,0 +1,96 @@
+$primary-color: #3498db;
+$white-color: #fff;
+$link-color: #fff;
+$link-hover-color: #ecf0f1;
+$link-underline: none;
+
+.navbar {
+  background-color: $primary-color;
+  padding: 10px 0;
+  color: $white-color;
+  //   position: fixed;
+  width: 100%;
+  //   z-index: 1000;
+
+  .navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0.6rem auto;
+  }
+
+  .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+
+    a {
+      color: $link-color;
+      text-decoration: $link-underline;
+
+      &:hover {
+        color: $link-hover-color;
+      }
+    }
+  }
+
+  .nav-items {
+    display: flex;
+
+    .nav-item {
+      margin-right: 20px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+
+      a {
+        color: $link-color;
+        text-decoration: $link-underline;
+
+        &:hover {
+          color: $link-hover-color;
+        }
+      }
+
+      &.active {
+        background-color: #007bff;
+        color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 0 0.3rem;
+      }
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+
+  .user-actions {
+    display: flex;
+
+    .account,
+    .cart {
+      margin-left: 20px;
+      cursor: pointer;
+
+      a {
+        color: $link-color;
+        text-decoration: $link-underline;
+
+        &:hover {
+          color: $link-hover-color;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    .nav-items {
+      display: none;
+    }
+
+    .user-actions {
+      margin-left: auto;
+    }
+  }
+}

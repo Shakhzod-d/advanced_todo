@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   deleteTodoByID,
+  editTodo,
   fetchTodos,
   selectCount,
 } from "../../features/todoSlice";
@@ -10,10 +11,14 @@ import { MdEditSquare } from "react-icons/md";
 import { FaTrash } from "react-icons/fa";
 import AddTodoButton from "../../components/AddTodoButton/AddTodoButton";
 import Modal from "../../components/Modal/Modal";
+import EditModal from "../../components/EditModal/EditModal";
 
 const Home = () => {
   const { todos, loading, role } = useSelector(selectCount);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isEditModalOpen, setEditModalOpen] = useState(false);
+  const [todoObj, setTodoId] = useState({ title: "", description: "" });
+
   const dispatch = useDispatch();
 
   const closeModal = () => {
@@ -23,11 +28,21 @@ const Home = () => {
   function onDelete(id) {
     dispatch(deleteTodoByID(id));
   }
-  const onEdit = (id) => {
-    // console.log(id);
+  const onEdit = (item) => {
+    setTodoId(item);
+    setEditModalOpen(true);
   };
 
-  // fetchTodos
+  const handleEdit = (itemId, currentItem) => {
+    const newCurrentTodo = {
+      id: itemId,
+      title: currentItem.editedTitle,
+      description: currentItem.editedDescription,
+      handleCloseModal: () => setEditModalOpen(false),
+    };
+    // console.log(newCurrentTodo);
+    dispatch(editTodo(newCurrentTodo));
+  };
 
   useEffect(() => {
     dispatch(fetchTodos());
@@ -38,6 +53,14 @@ const Home = () => {
       {loading && `loading...`}
       <br />
       {isModalVisible && <Modal onClose={closeModal} />}
+      {isEditModalOpen && (
+        <EditModal
+          isOpen={isEditModalOpen}
+          onClose={() => setEditModalOpen(false)}
+          currentItem={todoObj}
+          onEdit={handleEdit}
+        />
+      )}
 
       <br />
       <div
@@ -89,7 +112,10 @@ const Home = () => {
                   </div>
                   {role === `admin` && (
                     <>
-                      <button className="edit-button" onClick={onEdit}>
+                      <button
+                        className="edit-button"
+                        onClick={() => onEdit(item)}
+                      >
                         <MdEditSquare size={18} />
                       </button>
                       <button
@@ -102,7 +128,10 @@ const Home = () => {
                   )}
                   {item?.createdBy === "user" && role === `user` && (
                     <>
-                      <button className="edit-button" onClick={onEdit}>
+                      <button
+                        className="edit-button"
+                        onClick={() => onEdit(item)}
+                      >
                         <MdEditSquare size={18} />
                       </button>
                       <button

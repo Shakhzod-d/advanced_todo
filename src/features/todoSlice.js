@@ -108,6 +108,33 @@ export const postNewTODO = createAsyncThunk("todo/postNewTODO", async (obj) => {
   }
 });
 
+export const editTodo = createAsyncThunk("todo/editTodo", async (obj) => {
+  const { id, handleCloseModal, ...restObj } = obj;
+
+  try {
+    const response = await axios.put(
+      `${MAIN_URL}/api/v1/todos/${id}`,
+      restObj,
+      {
+        withCredentials: true,
+        headers: {
+          accept: "application/json",
+          Authorization: "73b4e40b-6d84-4252-858c-454b92e4906c",
+          "Content-Type": `application/json`,
+        },
+      }
+    );
+
+    if (response.status === 204) {
+      alert("Updated successfully");
+    }
+
+    return response.data;
+  } catch (error) {
+    console.error("Error:", error.message);
+  }
+});
+
 export const deleteTodoByID = createAsyncThunk(
   "todo/deleteTodoByID",
   async (id) => {

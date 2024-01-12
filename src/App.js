@@ -29,7 +29,7 @@ function App() {
     if (role === "") {
       navigate("/login");
     }
-    console.log(role);
+    // console.log(role);
   }, [role, navigate]);
 
   return (

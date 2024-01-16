@@ -1,28 +1,36 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  deleteTodoByID,
-  editTodo,
-  fetchTodos,
-  selectCount,
-} from "../../features/todoSlice";
+
 import Card from "../../components/Card/Card";
 import { MdEditSquare } from "react-icons/md";
 import { FaTrash } from "react-icons/fa";
 import AddTodoButton from "../../components/AddTodoButton/AddTodoButton";
 import Modal from "../../components/Modal/Modal";
-import EditModal from "../../components/EditModal/EditModal";
+import { selectTodo } from "../../features/todo/selectors";
+import { selectRole } from "../../features/me/selectors";
+import {
+  deleteTodoByID,
+  editTodo,
+  fetchTodos,
+  postNewTODO,
+} from "../../features/todo/actions";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
-  const { todos, loading, role } = useSelector(selectCount);
+  const { todos, loading } = useSelector(selectTodo);
+  const { role } = useSelector(selectRole);
+
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isEditModalOpen, setEditModalOpen] = useState(false);
+
   const [todoObj, setTodoId] = useState({ title: "", description: "" });
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const closeModal = () => {
     setIsModalVisible(false);
+    setEditModalOpen(false);
   };
 
   function onDelete(id) {
@@ -33,32 +41,47 @@ const Home = () => {
     setEditModalOpen(true);
   };
 
-  const handleEdit = (itemId, currentItem) => {
+  const handleEdit = (values, localModalClose) => {
     const newCurrentTodo = {
-      id: itemId,
-      title: currentItem.editedTitle,
-      description: currentItem.editedDescription,
-      handleCloseModal: () => setEditModalOpen(false),
+      ...todoObj,
+      ...values,
+      handleCloseModal: () => {
+        closeModal();
+        localModalClose();
+      },
     };
-    // console.log(newCurrentTodo);
+
     dispatch(editTodo(newCurrentTodo));
   };
 
+  const handleSubmit = (values, closeModal) => {
+    dispatch(postNewTODO(values));
+
+    closeModal();
+  };
+
   useEffect(() => {
-    dispatch(fetchTodos());
+    dispatch(fetchTodos(() => navigate("/login")));
   }, []);
 
   return (
     <div>
       {loading && `loading...`}
       <br />
-      {isModalVisible && <Modal onClose={closeModal} />}
+      {isModalVisible && (
+        <Modal
+          onClose={closeModal}
+          header="Create a new Todo"
+          handleSubmit={handleSubmit}
+          currentItem={null}
+        />
+      )}
       {isEditModalOpen && (
-        <EditModal
-          isOpen={isEditModalOpen}
-          onClose={() => setEditModalOpen(false)}
+        <Modal
+          onClose={closeModal}
+          header="Edit todo"
+          handleSubmit={handleEdit}
           currentItem={todoObj}
-          onEdit={handleEdit}
         />
       )}
 

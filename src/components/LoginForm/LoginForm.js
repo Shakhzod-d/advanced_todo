@@ -3,8 +3,9 @@ import React from "react";
 import { useFormik } from "formik";
 import { useDispatch } from "react-redux";
 import "./styles.scss";
-import { login } from "../../features/todoSlice";
+// import { login } from "../../features/todoSlice";
 import { useNavigate } from "react-router-dom";
+import { login } from "../../features/me/actions";
 
 const LoginForm = () => {
   const dispatch = useDispatch();
@@ -16,12 +17,8 @@ const LoginForm = () => {
       password: "admin123",
     },
     onSubmit: (values, { resetForm }) => {
-      // Handle form submission logic here
-
-      // console.log(values);
-      // dis; // login
       dispatch(login(values));
-      resetForm(); // Optionally reset the form after submission
+      resetForm();
     },
     validate: (values) => {
       const errors = {};

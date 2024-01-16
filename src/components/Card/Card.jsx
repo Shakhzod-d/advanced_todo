@@ -3,11 +3,10 @@ import { useSelector } from "react-redux";
 import { MdEditSquare } from "react-icons/md";
 import "./Card.scss";
 
-import { FaTrash } from "react-icons/fa";
-import { selectCount } from "../../features/todoSlice";
+import { selectRole } from "../../features/me/selectors";
 
 const Card = ({ createdBy, children, isRole = false }) => {
-  const { role } = useSelector(selectCount);
+  const { role } = useSelector(selectRole);
 
   return (
     <div

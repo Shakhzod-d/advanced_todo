@@ -1,14 +1,12 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUsers, selectCount } from "../../features/todoSlice";
 import Card from "../../components/Card/Card";
+import { selectUsers } from "../../features/user/selectors";
+import { fetchUsers } from "../../features/user/action";
 
 export const Users = () => {
-  const { users = [], loading = false } = useSelector(selectCount);
+  const { users = [], loading = false } = useSelector(selectUsers);
   const dispatch = useDispatch();
-
-  // fetchTodos
-  // console.log(users);
 
   useEffect(() => {
     dispatch(fetchUsers());

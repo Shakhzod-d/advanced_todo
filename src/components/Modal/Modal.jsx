@@ -4,9 +4,8 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
 import "./Modal.scss";
-import { postNewTODO } from "../../features/todoSlice";
 
-const Modal = ({ onClose }) => {
+const Modal = ({ onClose, header = "title", handleSubmit, currentItem }) => {
   const [isVisible, setIsVisible] = useState(true);
   const dispatch = useDispatch();
 
@@ -21,22 +20,24 @@ const Modal = ({ onClose }) => {
     }, 300);
   };
 
-  const handleSubmit = (values) => {
-    dispatch(postNewTODO(values));
+  // const handleSubmit = (values) => {
+  //   dispatch(postNewTODO(values));
 
-    closeModal();
-  };
+  //   closeModal();
+  // };
 
   const formik = useFormik({
     initialValues: {
-      title: "",
-      description: "",
+      title: currentItem === null ? "" : currentItem.title,
+      description: currentItem === null ? "" : currentItem.description,
     },
     validationSchema: Yup.object({
       title: Yup.string().required("Title is required"),
       description: Yup.string().required("Description is required"),
     }),
-    onSubmit: handleSubmit,
+    onSubmit: (values) => {
+      handleSubmit(values, closeModal);
+    },
   });
 
   return (
@@ -48,7 +49,7 @@ const Modal = ({ onClose }) => {
         <button className="close-btn" onClick={closeModal}>
           <AiOutlineClose />
         </button>
-        <p>Creat a new TODO</p>
+        <p>{header}</p>
         <form onSubmit={formik.handleSubmit}>
           <div className="input-container">
             <label htmlFor="title">Title:</label>

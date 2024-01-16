@@ -4,13 +4,17 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./Navbar.scss";
 import { navItems } from "./helper";
 
-import { logout, selectCount } from "../../features/todoSlice";
+import { selectRole } from "../../features/me/selectors";
+import { logout } from "../../features/me/actions";
 
 const Navbar = () => {
-  const { role } = useSelector(selectCount);
+  const { role } = useSelector(selectRole);
+
   const location = useLocation();
-  const dispatch = useDispatch(); //logout
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  // console.log(role);
 
   return (
     <nav className="navbar">

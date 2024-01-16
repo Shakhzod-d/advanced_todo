@@ -7,24 +7,17 @@ import {
   Routes,
   useNavigate,
 } from "react-router-dom";
-import { selectCount } from "./features/todoSlice";
 import { useSelector } from "react-redux";
 import LoginPage from "./pages/login";
 import Home from "./pages/Home/Home";
-import Cookies from "universal-cookie";
 import { Users } from "./pages/Users/Users";
-
-// Create a cookies instance
-const cookies = new Cookies();
+import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
+import { selectRole } from "./features/me/selectors";
 
 function App() {
-  const { role } = useSelector(selectCount);
+  const { role } = useSelector(selectRole);
   const navigate = useNavigate();
 
-  const userToken = cookies.get("auth");
-  // console.log(userToken);
-
-  // console.log(myCookieValue);
   useEffect(() => {
     if (role === "") {
       navigate("/login");
@@ -58,11 +51,10 @@ function App() {
 
         <Route
           path="/users"
-          index
           element={
-            <Suspense fallback={<h2>loading</h2>}>
+            <PrivateRoute allowedRole="admin">
               <Users />
-            </Suspense>
+            </PrivateRoute>
           }
         />
       </Routes>
